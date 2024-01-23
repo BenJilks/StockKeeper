@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class StringListBloc {
-  final _stringList = BehaviorSubject<List<String>>.seeded(['A', 'B']);
+  final BehaviorSubject<List<String>> _stringList;
+  StringListBloc(List<String> initialItems)
+    : _stringList = BehaviorSubject.seeded(initialItems);
 
   Stream<List<String>> get stringList => _stringList.stream;
 

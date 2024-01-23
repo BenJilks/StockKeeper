@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
+import 'package:stock_keeper/bloc/product_edit_bloc.dart';
 import 'package:stock_keeper/data/product.dart';
 import 'package:stock_keeper/data/stock_item.dart';
 import 'package:stock_keeper/product_editor.dart';
 import 'package:stock_keeper/stock_list.dart';
 
 void main() {
-  runApp(const BlocProvider(
-    child: StockKeeperApp()),
+  final test = ProductEditBloc();
+  test.product.listen((event) => print('${event.name}, ${event.variants}'));
+
+  runApp(BlocProvider(
+    productEditBloc: test,
+    child: const StockKeeperApp()),
   );
 }
 
@@ -17,14 +22,13 @@ class StockKeeperApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Stock Keeper',
 
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
 
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: const ProductEditor(),
     );
   }

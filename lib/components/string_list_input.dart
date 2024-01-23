@@ -23,7 +23,7 @@ class _StringListInputState extends State<StringListInput> {
   @override
   void initState() {
     super.initState();
-    bloc = StringListBloc();
+    bloc = StringListBloc(widget.initialItems);
 
     bloc.stringList.listen((event) {
       if (widget.onChange != null) {
