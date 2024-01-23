@@ -7,11 +7,8 @@ import 'package:stock_keeper/product_editor.dart';
 import 'package:stock_keeper/stock_list.dart';
 
 void main() {
-  final test = ProductEditBloc();
-  test.product.listen((event) => print('${event.name}, ${event.variants}'));
-
   runApp(BlocProvider(
-    productEditBloc: test,
+    productEditBloc: ProductEditBloc(),
     child: const StockKeeperApp()),
   );
 }

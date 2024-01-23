@@ -49,10 +49,7 @@ class _StringListInputState extends State<StringListInput> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
 
-          SizedBox(
-            height: 600.0,
-            child: buildStringList(snapshot.data),
-          ),
+          Expanded(child: buildStringList(snapshot.data)),
 
           TextButton(
             onPressed: () => bloc.add(snapshot.data!, 'Test'),
@@ -63,25 +60,21 @@ class _StringListInputState extends State<StringListInput> {
     );
   }
 
-  Widget? buildStringList(List<String>? list) {
-    if (list == null) {
-      return null;
-    }
-
+  Widget buildStringList(List<String>? list) {
     return ReorderableListView.builder(
-      onReorder: (oldIndex, newIndex) => bloc.reorder(list, oldIndex, newIndex),
+      onReorder: (oldIndex, newIndex) => bloc.reorder(list!, oldIndex, newIndex),
       buildDefaultDragHandles: false,
-      itemCount: list.length,
+      itemCount: list?.length ?? 0,
 
       itemBuilder: (context, index) => Padding(
         key: Key('$index'),
         padding: const EdgeInsets.symmetric(vertical: 8.0),
 
         child: _Item(
-          value: list[index],
+          value: list?[index] ?? '',
           index: index,
-          onDelete: () => bloc.delete(list, index),
-          onChange: (value) => bloc.update(list, index, value),
+          onDelete: () => bloc.delete(list!, index),
+          onChange: (value) => bloc.update(list!, index, value),
           bloc: bloc,
         ),
       ),

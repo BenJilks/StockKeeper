@@ -22,19 +22,43 @@ class ProductEditor extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextFormField(
-                initialValue: snapshot.data?.name,
-                onChanged: (value) => bloc.setName(snapshot.data!, value),
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                ),
-              ),
+              buildNameField(bloc, snapshot.data),
 
               const SizedBox(height: 20),
-              buildVariantsCard(bloc, snapshot.data),
+              Expanded(
+                child: buildVariantsCard(bloc, snapshot.data),
+              ),
+
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => {},
+                    child: const Text('Discard'),
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  TextButton(
+                    onPressed: () => {},
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildNameField(ProductEditBloc bloc, Product? product) {
+    return TextFormField(
+      initialValue: product?.name,
+      onChanged: (value) => bloc.setName(product!, value),
+      decoration: const InputDecoration(
+        labelText: 'Name',
       ),
     );
   }
