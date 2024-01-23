@@ -110,7 +110,9 @@ class _ItemState extends State<_Item> {
 
     controller = TextEditingController(text: widget.value);
     widget.bloc.stringList.listen((event) {
-      controller.text = event[widget.index];
+      if (controller.text != event[widget.index]) {
+        controller.text = event[widget.index];
+      }
     });
   }
 
