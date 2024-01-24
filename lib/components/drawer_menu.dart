@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-enum AppPage {
+enum AppScreen {
   stockManager,
   productManager,
 }
 
 class DrawerMenu extends StatelessWidget {
-  final AppPage page;
-  const DrawerMenu(this.page, { super.key });
+  final AppScreen screen;
+  const DrawerMenu(this.screen, { super.key });
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,13 @@ class DrawerMenu extends StatelessWidget {
         ),
 
         ListTile(
-          selected: page == AppPage.stockManager,
+          selected: screen == AppScreen.stockManager,
           title: const Text('Stock Manager'),
           onTap: () => Navigator.of(context).pushReplacementNamed('/'),
         ),
 
         ListTile(
-          selected: page == AppPage.productManager,
+          selected: screen == AppScreen.productManager,
           title: const Text('Product Manager'),
           onTap: () => Navigator.of(context).pushReplacementNamed('/product-manager'),
         ),

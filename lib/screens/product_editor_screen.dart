@@ -4,8 +4,8 @@ import 'package:stock_keeper/bloc/product_edit_bloc.dart';
 import 'package:stock_keeper/components/string_list_input.dart';
 import 'package:stock_keeper/data/product.dart';
 
-class ProductEditor extends StatelessWidget {
-  const ProductEditor({ super.key });
+class ProductEditorScreen extends StatelessWidget {
+  const ProductEditorScreen({ super.key });
 
   void _save(BuildContext context, ProductEditBloc editBloc) {
     final listBloc = BlocProvider.of(context).productListBloc;

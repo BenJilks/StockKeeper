@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
-import 'package:stock_keeper/bloc/product_list_block.dart';
+import 'package:stock_keeper/bloc/product_list_bloc.dart';
 import 'package:stock_keeper/components/drawer_menu.dart';
 import 'package:stock_keeper/data/product.dart';
 
-class ProductManagerPage extends StatelessWidget {
-  const ProductManagerPage({ super.key });
+class ProductManagerScreen extends StatelessWidget {
+  const ProductManagerScreen({ super.key });
 
   void _add(BuildContext context) {
     final bloc = BlocProvider.of(context).productEditBloc;
@@ -28,7 +28,7 @@ class ProductManagerPage extends StatelessWidget {
       ),
 
       drawer: const Drawer(
-        child: DrawerMenu(AppPage.productManager),
+        child: DrawerMenu(AppScreen.productManager),
       ),
 
       floatingActionButton: FloatingActionButton(

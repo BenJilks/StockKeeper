@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
 import 'package:stock_keeper/bloc/product_edit_bloc.dart';
-import 'package:stock_keeper/bloc/product_list_block.dart';
+import 'package:stock_keeper/bloc/product_list_bloc.dart';
 import 'package:stock_keeper/data/product_repository.dart';
-import 'package:stock_keeper/pages/product_editor_page.dart';
-import 'package:stock_keeper/pages/product_manager_page.dart';
-import 'package:stock_keeper/pages/stock_manager_page.dart';
+import 'package:stock_keeper/screens/product_editor_screen.dart';
+import 'package:stock_keeper/screens/product_manager_screen.dart';
+import 'package:stock_keeper/screens/stock_manager_screen.dart';
 
 void main() {
   final productRepository = ProductRepository();
@@ -31,9 +31,9 @@ class StockKeeperApp extends StatelessWidget {
       ),
 
       routes: {
-        '/': (context) => const StockManagerPage(),
-        '/product-manager': (context) => const ProductManagerPage(),
-        '/edit-product': (context) => const ProductEditor(),
+        '/': (context) => const StockManagerScreen(),
+        '/product-manager': (context) => const ProductManagerScreen(),
+        '/edit-product': (context) => const ProductEditorScreen(),
       },
     );
   }

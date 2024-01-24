@@ -4,8 +4,8 @@ import 'package:stock_keeper/components/stock_list.dart';
 import 'package:stock_keeper/data/product.dart';
 import 'package:stock_keeper/data/stock_item.dart';
 
-class StockManagerPage extends StatelessWidget {
-  const StockManagerPage({super.key});
+class StockManagerScreen extends StatelessWidget {
+  const StockManagerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class StockManagerPage extends StatelessWidget {
       ),
 
       drawer: const Drawer(
-        child: DrawerMenu(AppPage.stockManager),
+        child: DrawerMenu(AppScreen.stockManager),
       ),
 
       body: StockList([
