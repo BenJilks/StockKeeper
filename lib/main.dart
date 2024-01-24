@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
 import 'package:stock_keeper/bloc/product_edit_bloc.dart';
+import 'package:stock_keeper/bloc/product_list_block.dart';
+import 'package:stock_keeper/data/product_repository.dart';
 import 'package:stock_keeper/pages/product_editor_page.dart';
+import 'package:stock_keeper/pages/product_manager_page.dart';
 
 void main() {
+  final productRepository = ProductRepository();
+
   runApp(BlocProvider(
     productEditBloc: ProductEditBloc(),
+    productListBloc: ProductListBloc(repository: productRepository),
     child: const StockKeeperApp()),
   );
 }
@@ -23,7 +29,10 @@ class StockKeeperApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home: const ProductEditor(),
+      routes: {
+        '/': (context) => const ProductManagerPage(),
+        '/edit-product': (context) => const ProductEditor(),
+      },
     );
   }
 }

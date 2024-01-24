@@ -6,6 +6,16 @@ import 'package:stock_keeper/data/product.dart';
 
 class ProductEditor extends StatelessWidget {
   const ProductEditor({ super.key });
+
+  void _save(BuildContext context, ProductEditBloc editBloc) {
+    final listBloc = BlocProvider.of(context).productListBloc;
+    listBloc.set(editBloc.product.value);
+    Navigator.of(context).pop();
+  }
+
+  void _discard(BuildContext context) {
+    Navigator.of(context).pop();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -18,62 +28,70 @@ class ProductEditor extends StatelessWidget {
 
       body: StreamBuilder<Product>(
         stream: bloc.product,
-        builder: (context, snapshot) => Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              buildNameField(bloc, snapshot.data),
-
-              const SizedBox(height: 20),
-              Expanded(
-                child: buildVariantsCard(bloc, snapshot.data),
-              ),
-
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => {},
-                    child: const Text('Discard'),
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  TextButton(
-                    onPressed: () => {},
-                    child: const Text('Save'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return const Text('Loading...');
+          } else {
+            return buildEditForm(context, bloc, snapshot.data!);
+          }
+        },
       ),
     );
   }
 
-  Widget buildNameField(ProductEditBloc bloc, Product? product) {
+  Widget buildEditForm(BuildContext context, ProductEditBloc bloc, Product product) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          buildNameField(bloc, product),
+
+          const SizedBox(height: 20),
+          Expanded(
+            child: buildVariantsCard(bloc, product),
+          ),
+
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => _discard(context),
+                child: const Text('Discard'),
+              ),
+
+              const SizedBox(width: 10),
+
+              TextButton(
+                onPressed: () => _save(context, bloc),
+                child: const Text('Save'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildNameField(ProductEditBloc bloc, Product product) {
     return TextFormField(
-      initialValue: product?.name,
-      onChanged: (value) => bloc.setName(product!, value),
+      initialValue: product.name,
+      onChanged: (value) => bloc.setName(product, value),
       decoration: const InputDecoration(
         labelText: 'Name',
       ),
     );
   }
 
-  Widget buildVariantsCard(ProductEditBloc bloc, Product? product) {
+  Widget buildVariantsCard(ProductEditBloc bloc, Product product) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: StringListInput(
           title: 'Variants',
-          initialItems: product?.variants ?? [],
+          initialItems: product.variants,
           onChange: (list) => {
-            if (product != null) {
-              bloc.setVariants(product, list)
-            }
+            bloc.setVariants(product, list)
           },
         ),
       ),

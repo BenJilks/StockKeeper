@@ -15,8 +15,8 @@ class StockListPage extends StatefulWidget {
 class _StockListPageState extends State<StockListPage> {
   @override
   Widget build(BuildContext context) {
-    const product_a = Product(name: 'Product A', variants: ['Blue', 'Green']);
-    const product_b = Product(name: 'Product B');
+    final product_a = Product(name: 'Product A', variants: ['Blue', 'Green']);
+    final product_b = Product(name: 'Product B');
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +24,7 @@ class _StockListPageState extends State<StockListPage> {
         title: Text(widget.title),
       ),
 
-      body: const StockList([
+      body: StockList([
         StockItem(product_a, 21, variant: 'Blue'),
         StockItem(product_a, 69, variant: 'Green'),
         StockItem(product_b, 420),
