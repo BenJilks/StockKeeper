@@ -5,6 +5,7 @@ import 'package:stock_keeper/bloc/product_list_block.dart';
 import 'package:stock_keeper/data/product_repository.dart';
 import 'package:stock_keeper/pages/product_editor_page.dart';
 import 'package:stock_keeper/pages/product_manager_page.dart';
+import 'package:stock_keeper/pages/stock_manager_page.dart';
 
 void main() {
   final productRepository = ProductRepository();
@@ -30,7 +31,8 @@ class StockKeeperApp extends StatelessWidget {
       ),
 
       routes: {
-        '/': (context) => const ProductManagerPage(),
+        '/': (context) => const StockManagerPage(),
+        '/product-manager': (context) => const ProductManagerPage(),
         '/edit-product': (context) => const ProductEditor(),
       },
     );

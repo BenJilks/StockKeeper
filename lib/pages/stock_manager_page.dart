@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:stock_keeper/components/drawer_menu.dart';
 import 'package:stock_keeper/components/stock_list.dart';
 import 'package:stock_keeper/data/product.dart';
 import 'package:stock_keeper/data/stock_item.dart';
 
-class StockListPage extends StatefulWidget {
-  const StockListPage({super.key, required this.title});
+class StockManagerPage extends StatelessWidget {
+  const StockManagerPage({super.key});
 
-  final String title;
-
-  @override
-  State<StockListPage> createState() => _StockListPageState();
-}
-
-class _StockListPageState extends State<StockListPage> {
   @override
   Widget build(BuildContext context) {
     final product_a = Product(name: 'Product A', variants: ['Blue', 'Green']);
@@ -21,7 +15,11 @@ class _StockListPageState extends State<StockListPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Stock Manager'),
+      ),
+
+      drawer: const Drawer(
+        child: DrawerMenu(AppPage.stockManager),
       ),
 
       body: StockList([

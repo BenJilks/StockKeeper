@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
 import 'package:stock_keeper/bloc/product_list_block.dart';
+import 'package:stock_keeper/components/drawer_menu.dart';
 import 'package:stock_keeper/data/product.dart';
 
 class ProductManagerPage extends StatelessWidget {
@@ -24,6 +25,10 @@ class ProductManagerPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
         child: buildProductList(bloc),
+      ),
+
+      drawer: const Drawer(
+        child: DrawerMenu(AppPage.productManager),
       ),
 
       floatingActionButton: FloatingActionButton(
