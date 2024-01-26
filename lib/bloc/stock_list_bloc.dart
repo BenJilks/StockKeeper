@@ -1,3 +1,4 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:stock_keeper/data/product.dart';
 import 'package:stock_keeper/data/product_repository.dart';
 import 'package:stock_keeper/data/stock_item.dart';
@@ -14,11 +15,11 @@ class ProductAndStockItem {
 
 class StockListBloc {
   final ProductRepository repository;
-  late final Stream<List<ProductAndStockItem>> stock;
+  final _stock = BehaviorSubject<List<ProductAndStockItem>>();
 
   StockListBloc({ required this.repository }) {
-    stock = repository.products.map((event) {
-      return event
+    repository.products.listen((event) {
+      _stock.sink.add(event
         .map((product) => product.items.values
         .map((item) =>
           ProductAndStockItem(
@@ -27,9 +28,11 @@ class StockListBloc {
           )
         ))
         .expand((item) => item)
-        .toList();
+        .toList());
     });
   }
+
+  ValueStream<List<ProductAndStockItem>> get stock => _stock.stream;
 
   void updateCount(ProductAndStockItem item, int count) {
     final stockItem = item.stockItem.update(count: count);

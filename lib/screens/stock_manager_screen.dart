@@ -21,6 +21,11 @@ class StockManagerScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: StockList(),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed('/create-stock-item'),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

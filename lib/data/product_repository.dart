@@ -16,7 +16,7 @@ class ProductRepository {
     });
   }
 
-  Stream<List<Product>> get products => _products.stream;
+  ValueStream<List<Product>> get products => _products.stream;
   List<Product> get snapshot => _products.value;
 
   void add(Product product) {
