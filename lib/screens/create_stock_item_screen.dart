@@ -32,6 +32,7 @@ class _CreateStockItemState extends State<CreateStockItemScreen> {
   }
 
   void _onSave(BuildContext context) {
+    // FIXME: this kind of logic is what should belong in a bloc.
     setState(() {
       if (selectedProduct == null) {
         errorMessage = 'No product selected';
