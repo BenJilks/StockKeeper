@@ -8,7 +8,10 @@
 .buildlog/
 .history
 .svn/
+.StockKeeper
 migrate_working_dir/
+stockkeeper_bad_keys.hive
+stockkeeper_bad_keys.lock
 
 # IntelliJ related
 *.iml

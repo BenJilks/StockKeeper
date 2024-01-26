@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
 import 'package:stock_keeper/bloc/stock_list_bloc.dart';
+import 'package:stock_keeper/data/product.dart';
 import 'package:stock_keeper/data/stock_item.dart';
 
 class StockList extends StatelessWidget {
@@ -21,7 +22,7 @@ class StockList extends StatelessWidget {
     );
   }
 
-  Widget buildList(BuildContext context, List<StockItem> stock) {
+  Widget buildList(BuildContext context, List<ProductAndStockItem> stock) {
     return ListView.builder(
       itemCount: stock.length,
       itemBuilder: (context, index) =>
@@ -31,8 +32,12 @@ class StockList extends StatelessWidget {
 }
 
 class _Item extends StatefulWidget {
+  final ProductAndStockItem product_and_item;
+  final Product product;
   final StockItem item;
-  const _Item(this.item);
+  _Item(this.product_and_item)
+    : product = product_and_item.product
+    , item = product_and_item.stockItem;
 
   @override
   State<StatefulWidget> createState() => _ItemState();
@@ -52,23 +57,23 @@ class _ItemState extends State<_Item> {
 
   get _description {
     if (widget.item.variant == null) {
-      return widget.item.product.name;
+      return widget.product.name;
     } else {
-      return '${ widget.item.product.name } - ${ widget.item.variant }';
+      return '${ widget.product.name } - ${ widget.item.variant }';
     }
   }
 
   void _onCountChange(StockListBloc bloc, String value) {
     try {
       final count = int.parse(value);
-      bloc.updateCount(widget.item, count);
+      bloc.updateCount(widget.product_and_item, count);
     } on FormatException catch(_) {
       // If the value isn't a number, don't update anything.
     }
   }
 
   void _setCount(StockListBloc bloc, int count) {
-    bloc.updateCount(widget.item, count);
+    bloc.updateCount(widget.product_and_item, count);
     controller.text = count.toString();
   }
 
