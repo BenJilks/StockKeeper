@@ -2,26 +2,26 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class EditableListBloc<T> {
-  final BehaviorSubject<List<T>> _stringList;
+  final BehaviorSubject<List<T>> _list;
   EditableListBloc(List<T> initialItems)
-    : _stringList = BehaviorSubject.seeded(initialItems);
+    : _list = BehaviorSubject.seeded(initialItems);
 
-  Stream<List<T>> get list => _stringList.stream;
+  Stream<List<T>> get list => _list.stream;
 
   void add(List<T> list, T item) {
-      _stringList.sink.add([...list, item]);
+      _list.sink.add([...list, item]);
   }
 
   void delete(List<T> list, int index) {
     final newList = [...list];
     newList.removeAt(index);
-    _stringList.sink.add(newList);
+    _list.sink.add(newList);
   }
 
   void update(List<T> list, int index, T value) {
     final newList = [...list];
     newList[index] = value;
-    _stringList.sink.add(newList);
+    _list.sink.add(newList);
   }
 
   void reorder(List<T> list, int oldIndex, int newIndex) {
@@ -32,10 +32,10 @@ class EditableListBloc<T> {
     final newList = [...list];
     final item = newList.removeAt(oldIndex);
     newList.insert(newIndex, item);
-    _stringList.sink.add(newList);
+    _list.sink.add(newList);
   }
 
   void dispose() {
-    _stringList.close();
+    _list.close();
   }
 }

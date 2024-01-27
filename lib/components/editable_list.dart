@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/editable_list_bloc.dart';
 
-class ListInput<T> extends StatefulWidget {
+class EditableList<T> extends StatefulWidget {
   final String title;
   final List<T> initialItems;
   final void Function(List<T>)? onChange;
@@ -10,7 +10,7 @@ class ListInput<T> extends StatefulWidget {
   final T Function(T item, String newValue) update;
   final T Function() defaultValue; 
 
-  const ListInput({
+  const EditableList({
     required this.title,
     required this.initialItems,
     this.onChange,
@@ -23,10 +23,10 @@ class ListInput<T> extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _ListInputState<T>();
+  State<StatefulWidget> createState() => _EditableListState<T>();
 }
 
-class _ListInputState<T> extends State<ListInput<T>> {
+class _EditableListState<T> extends State<EditableList<T>> {
   late final EditableListBloc<T> bloc;
 
   @override

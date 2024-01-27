@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_keeper/bloc/block_provider.dart';
 import 'package:stock_keeper/bloc/product_edit_bloc.dart';
-import 'package:stock_keeper/components/list_input.dart';
+import 'package:stock_keeper/components/editable_list.dart';
 import 'package:stock_keeper/data/product.dart';
 
 class ProductEditorScreen extends StatelessWidget {
@@ -87,7 +87,7 @@ class ProductEditorScreen extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListInput<ProductVariant>(
+        child: EditableList<ProductVariant>(
           title: 'Variants',
           initialItems: product.variants,
           onChange: (list) => bloc.setVariants(product, list),
