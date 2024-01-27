@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class EditableListBloc<T> {
@@ -6,7 +5,7 @@ class EditableListBloc<T> {
   EditableListBloc(List<T> initialItems)
     : _list = BehaviorSubject.seeded(initialItems);
 
-  Stream<List<T>> get list => _list.stream;
+  ValueStream<List<T>> get list => _list.stream;
 
   void add(List<T> list, T item) {
       _list.sink.add([...list, item]);
