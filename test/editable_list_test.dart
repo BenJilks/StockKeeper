@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:stock_keeper/bloc/editable_list_bloc.dart';
-import 'package:test/test.dart';
+import 'package:stock_keeper/components/editable_list.dart';
 
 void main() {
   _testBloc();
+  _testWidget();
 }
 
 void _testBloc() {
@@ -38,5 +41,52 @@ void _testBloc() {
 
     bloc.reorder(bloc.list.value, 1, 0);
     expect(bloc.list.value, ['b', 'a']);
+  });
+}
+
+void _testWidget() {
+  testWidgets('Editable List', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+
+      home: Card(
+        child: EditableList<String>(
+          title: 'Title',
+          initialItems: const ['A'],
+
+          display: (item) => item,
+          update: (item, value) => value,
+          defaultValue: () => 'Default',
+        ),
+      ),
+    ));
+
+    // Initial state of having one item called 'A'
+    await tester.pump();
+    expect(find.text('Title'), findsOneWidget);
+    expect(find.text('A'), findsOneWidget);
+    expect(find.text('Default'), findsNothing);
+
+    // Press the 'Add New' button
+    await tester.tap(find.byKey(const Key('add-button')));
+    await tester.pump();
+    expect(find.text('A'), findsOneWidget);
+    expect(find.text('Default'), findsOneWidget);
+
+    // Press the 'Add New' button again
+    await tester.tap(find.byKey(const Key('add-button')));
+    await tester.pump();
+    expect(find.text('A'), findsOneWidget);
+    expect(find.text('Default'), findsExactly(2));
+
+    // Change the first default to be 'B'
+    await tester.enterText(find.text('Default').first, 'B');
+    await tester.pump();
+    expect(find.text('A'), findsOneWidget);
+    expect(find.text('B'), findsOneWidget);
+    expect(find.text('Default'), findsOneWidget);
   });
 }

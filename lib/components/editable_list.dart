@@ -61,6 +61,7 @@ class _EditableListState<T> extends State<EditableList<T>> {
           Expanded(child: buildStringList(snapshot.data)),
 
           TextButton(
+            key: const Key('add-button'),
             onPressed: () => bloc.add(snapshot.data!, widget.defaultValue()),
             child: const Text('Add New'),
           ),
