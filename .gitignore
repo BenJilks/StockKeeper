@@ -9,7 +9,8 @@
 .buildlog/
 .history
 .svn/
-.StockKeeper
+.StockKeeper/
+coverage/
 migrate_working_dir/
 stockkeeper_bad_keys.hive
 stockkeeper_bad_keys.lock

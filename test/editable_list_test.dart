@@ -37,10 +37,13 @@ void _testBloc() {
   });
 
   test('Reorder', () {
-    final bloc = EditableListBloc<String>(['a', 'b']);
+    final bloc = EditableListBloc<String>(['a', 'b', 'c']);
 
     bloc.reorder(bloc.list.value, 1, 0);
-    expect(bloc.list.value, ['b', 'a']);
+    expect(bloc.list.value, ['b', 'a', 'c']);
+
+    bloc.reorder(bloc.list.value, 0, 2);
+    expect(bloc.list.value, ['a', 'b', 'c']);
   });
 }
 
