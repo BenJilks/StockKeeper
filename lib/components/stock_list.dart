@@ -32,12 +32,12 @@ class StockList extends StatelessWidget {
 }
 
 class _Item extends StatefulWidget {
-  final ProductAndStockItem product_and_item;
+  final ProductAndStockItem productAndItem;
   final Product product;
   final StockItem item;
-  _Item(this.product_and_item)
-    : product = product_and_item.product
-    , item = product_and_item.stockItem;
+  _Item(this.productAndItem)
+    : product = productAndItem.product
+    , item = productAndItem.stockItem;
 
   @override
   State<StatefulWidget> createState() => _ItemState();
@@ -56,24 +56,25 @@ class _ItemState extends State<_Item> {
   }
 
   get _description {
-    if (widget.item.variant == null) {
+    if (widget.item.variantId == null) {
       return widget.product.name;
     } else {
-      return '${ widget.product.name } - ${ widget.item.variant }';
+      final variantName = widget.product.getVariantById(widget.item.variantId!)?.name;
+      return '${ widget.product.name } - ${ variantName ?? 'Unknown' }';
     }
   }
 
   void _onCountChange(StockListBloc bloc, String value) {
     try {
       final count = int.parse(value);
-      bloc.updateCount(widget.product_and_item, count);
+      bloc.updateCount(widget.productAndItem, count);
     } on FormatException catch(_) {
       // If the value isn't a number, don't update anything.
     }
   }
 
   void _setCount(StockListBloc bloc, int count) {
-    bloc.updateCount(widget.product_and_item, count);
+    bloc.updateCount(widget.productAndItem, count);
     controller.text = count.toString();
   }
 

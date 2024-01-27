@@ -14,6 +14,7 @@ import 'package:stock_keeper/screens/stock_manager_screen.dart';
 
 void main() async {
   Hive.registerAdapter(ProductAdapter());
+  Hive.registerAdapter(ProductVariantAdapter());
   Hive.registerAdapter(StockItemAdapter());
   final database = await BoxCollection.open(
     'StockKeeper',

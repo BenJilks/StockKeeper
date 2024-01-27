@@ -13,7 +13,7 @@ class ProductEditBloc {
     _product.sink.add(product.update(name: name));
   }
 
-  void setVariants(Product product, List<String> variants) {
+  void setVariants(Product product, List<ProductVariant> variants) {
     _product.sink.add(product.update(variants: variants));
   }
 

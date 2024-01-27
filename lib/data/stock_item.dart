@@ -10,7 +10,7 @@ class StockItem {
   final String id;
 
   @HiveField(1)
-  final String? variant;
+  final String? variantId;
 
   @HiveField(2)
   final int countInStock;
@@ -18,13 +18,13 @@ class StockItem {
   StockItem({
     String? id,
     required this.countInStock,
-    this.variant,
+    this.variantId,
   }) : id = id ?? const Uuid().v4();
 
-  StockItem update({ String? id, Product? product, String? variant, int? count }) {
+  StockItem update({ String? id, Product? product, String? variantId, int? count }) {
     return StockItem(
       id: id ?? this.id,
-      variant: variant ?? this.variant,
+      variantId: variantId ?? this.variantId,
       countInStock: count ?? countInStock,
     );
   }

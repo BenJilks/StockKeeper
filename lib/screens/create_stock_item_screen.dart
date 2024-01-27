@@ -47,7 +47,7 @@ class _CreateStockItemState extends State<CreateStockItemScreen> {
       final stockListBloc = BlocProvider.of(context).stockListBloc;
       final stockList = stockListBloc.stock.value;
       for (final item in stockList) {
-        if (item.product == selectedProduct && item.stockItem.variant == selectedVariant) {
+        if (item.product == selectedProduct && item.stockItem.variantId == selectedVariant) {
           errorMessage = 'Stock item already exists';
           return;
         }
@@ -56,7 +56,7 @@ class _CreateStockItemState extends State<CreateStockItemScreen> {
       final productListBloc = BlocProvider.of(context).productListBloc;
       productListBloc.set(selectedProduct!.updateItem(StockItem(
         countInStock: 0,
-        variant: selectedVariant,
+        variantId: selectedVariant,
       )));
 
       errorMessage = '';
@@ -153,8 +153,8 @@ class _CreateStockItemState extends State<CreateStockItemScreen> {
       value: selectedVariant,
 
       items: selectedProduct!.variants.map((variant) => DropdownMenuItem<String>(
-        value: variant,
-        child: Text(variant),
+        value: variant.id,
+        child: Text(variant.name),
       )).toList(),
     );
   }
