@@ -1,30 +1,30 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
-class StringListBloc {
-  final BehaviorSubject<List<String>> _stringList;
-  StringListBloc(List<String> initialItems)
+class EditableListBloc<T> {
+  final BehaviorSubject<List<T>> _stringList;
+  EditableListBloc(List<T> initialItems)
     : _stringList = BehaviorSubject.seeded(initialItems);
 
-  Stream<List<String>> get stringList => _stringList.stream;
+  Stream<List<T>> get list => _stringList.stream;
 
-  void add(List<String> list, String item) {
+  void add(List<T> list, T item) {
       _stringList.sink.add([...list, item]);
   }
 
-  void delete(List<String> list, int index) {
+  void delete(List<T> list, int index) {
     final newList = [...list];
     newList.removeAt(index);
     _stringList.sink.add(newList);
   }
 
-  void update(List<String> list, int index, String value) {
+  void update(List<T> list, int index, T value) {
     final newList = [...list];
     newList[index] = value;
     _stringList.sink.add(newList);
   }
 
-  void reorder(List<String> list, int oldIndex, int newIndex) {
+  void reorder(List<T> list, int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }

@@ -1,31 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:stock_keeper/bloc/string_list_bloc.dart';
+import 'package:stock_keeper/bloc/editable_list_bloc.dart';
 
-class StringListInput extends StatefulWidget {
+class ListInput<T> extends StatefulWidget {
   final String title;
-  final List<String> initialItems;
-  final void Function(List<String>)? onChange;
+  final List<T> initialItems;
+  final void Function(List<T>)? onChange;
 
-  const StringListInput({
+  final String Function(T value) display;
+  final T Function(T item, String newValue) update;
+  final T Function() defaultValue; 
+
+  const ListInput({
     required this.title,
     required this.initialItems,
     this.onChange,
+
+    required this.display,
+    required this.update,
+    required this.defaultValue,
+
     super.key,
   });
 
   @override
-  State<StatefulWidget> createState() => _StringListInputState();
+  State<StatefulWidget> createState() => _ListInputState<T>();
 }
 
-class _StringListInputState extends State<StringListInput> {
-  late final StringListBloc bloc;
+class _ListInputState<T> extends State<ListInput<T>> {
+  late final EditableListBloc<T> bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = StringListBloc(widget.initialItems);
+    bloc = EditableListBloc<T>(widget.initialItems);
 
-    bloc.stringList.listen((event) {
+    bloc.list.listen((event) {
       if (widget.onChange != null) {
         widget.onChange!(event);
       }
@@ -40,8 +49,8 @@ class _StringListInputState extends State<StringListInput> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<String>>(
-      stream: bloc.stringList,
+    return StreamBuilder<List<T>>(
+      stream: bloc.list,
       builder: (context, snapshot) => Column(
         children: [
           Text(
@@ -52,7 +61,7 @@ class _StringListInputState extends State<StringListInput> {
           Expanded(child: buildStringList(snapshot.data)),
 
           TextButton(
-            onPressed: () => bloc.add(snapshot.data!, 'Test'),
+            onPressed: () => bloc.add(snapshot.data!, widget.defaultValue()),
             child: const Text('Add New'),
           ),
         ],
@@ -60,7 +69,7 @@ class _StringListInputState extends State<StringListInput> {
     );
   }
 
-  Widget buildStringList(List<String>? list) {
+  Widget buildStringList(List<T>? list) {
     return ReorderableListView.builder(
       onReorder: (oldIndex, newIndex) => bloc.reorder(list!, oldIndex, newIndex),
       buildDefaultDragHandles: false,
@@ -70,48 +79,63 @@ class _StringListInputState extends State<StringListInput> {
         key: Key('$index'),
         padding: const EdgeInsets.symmetric(vertical: 8.0),
 
-        child: _Item(
-          value: list?[index] ?? '',
+        child: _Item<T>(
+          item: list![index],
           index: index,
-          onDelete: () => bloc.delete(list!, index),
-          onChange: (value) => bloc.update(list!, index, value),
+          onDelete: () => bloc.delete(list, index),
+          onChange: (value) => bloc.update(list, index, value),
           bloc: bloc,
+
+          display: widget.display,
+          update: widget.update,
         ),
       ),
     );
   }
 }
 
-class _Item extends StatefulWidget {
-  final String value;
+class _Item<T> extends StatefulWidget {
+  final T item;
   final int index;
   final void Function() onDelete;
-  final void Function(String text) onChange;
-  final StringListBloc bloc;
+  final void Function(T value) onChange;
+  final EditableListBloc bloc;
+
+  final String Function(T value) display;
+  final T Function(T item, String newValue) update;
 
   const _Item({
-    required this.value,
+    required this.item,
     required this.index,
     required this.onDelete,
     required this.onChange,
     required this.bloc,
+
+    required this.display,
+    required this.update,
   });
 
   @override
-  State<StatefulWidget> createState() => _ItemState();
+  State<StatefulWidget> createState() => _ItemState<T>();
 }
 
-class _ItemState extends State<_Item> {
+class _ItemState<T> extends State<_Item<T>> {
   late final TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
 
-    controller = TextEditingController(text: widget.value);
-    widget.bloc.stringList.listen((event) {
-      if (widget.index < event.length && controller.text != event[widget.index]) {
-        controller.text = event[widget.index];
+    controller = TextEditingController(text: widget.display(widget.item));
+    widget.bloc.list.listen((event) {
+      if (widget.index >= event.length) {
+        return;
+      }
+
+      // This happens on a reorder, so no need to update the value.
+      final newText = widget.display(event[widget.index]);
+      if (controller.text != newText) {
+        controller.text = newText;
       }
     });
   }
@@ -131,7 +155,9 @@ class _ItemState extends State<_Item> {
             padding: const EdgeInsets.only(left: 16.0),
             child: TextField(
               controller: controller,
-              onChanged: (value) => widget.onChange(value),
+              onChanged: (value) {
+                widget.onChange(widget.update(widget.item, value));
+              },
             ),
           ),
         ),
